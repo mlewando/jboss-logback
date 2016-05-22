@@ -18,13 +18,26 @@ RUN apk del curl tar
 
 ENV MODULES_BASE=$JBOSS_HOME/modules
 ENV MODULES_SYSTEM=$MODULES_BASE/system/layers/base
-ENV MYSQL_MODULE=$MODULES_SYSTEM/com/mysql/driver/main
+ENV MYSQL_MODULE=$MODULES_SYSTEM/com/mysql/driver/main \
+    JBOS_LOGGING_MODULE=$MODULES_SYSTEM/org/jboss/logging/main \
+    SLF4J_MODULE=$MODULES_SYSTEM/org/slf4j/main \
+    LOGBACK_MODULE=$MODULES_SYSTEM/ch/qos/logback/main
 
 ADD mgmt-users.properties $JBOSS_HOME/standalone/configuration/mgmt-users.properties
 ADD standalone.xml $JBOSS_HOME/standalone/configuration/standalone.xml
 
 ADD mysql.module.xml $MYSQL_MODULE/module.xml
 ADD http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar $MYSQL_MODULE/mysql-connector-java-5.1.22.jar
+
+ADD jbos.logging.module.xml $JBOS_LOGGING_MODULE/module.xml
+ADD jbos.slf4j.module.xml $SLF4J_MODULE/module.xml
+ADD http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar $SLF4J_MODULE/slf4j-api-1.7.21.jar
+ADD lobback.module.xml $LOGBACK_MODULE/module.xml
+ADD http://central.maven.org/maven2/ch/qos/logback/logback-classic/1.1.7/logback-classic-1.1.7.jar $LOGBACK_MODULE/logback-classic-1.1.7.jar
+ADD http://central.maven.org/maven2/ch/qos/logback/logback-core/1.1.7/logback-core-1.1.7.jar $LOGBACK_MODULE/logback-core-1.1.7.jar
+
+ADD standalone.conf $JBOSS_HOME/bin/standalone.conf
+ADD logback.xml $JBOSS_HOME/standalone/configuration/logback.xml
 
 WORKDIR $JBOSS_HOME
 

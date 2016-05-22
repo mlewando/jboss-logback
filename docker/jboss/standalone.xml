@@ -30,6 +30,9 @@
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
     </extensions>
+    <system-properties>
+        <property name="org.jboss.logging.provider" value="slf4j"/>
+    </system-properties>
 
     <management>
         <security-realms>
